@@ -1,0 +1,8 @@
+{
+  "name": "ClothesAPI",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/mirrorcall96/ClothesAPI.git",
+  "author": "mirrorcall96 <mirrorcall96@gmail.com>",
+  "license": "MIT"
+}
