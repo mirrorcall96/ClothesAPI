@@ -1,9 +1,7 @@
 const express = require("express");
-const data = require("./data");
-
+const clothesRouters = require("./routers/clothes");
 const port = 8000;
 const app = express();
+app.use(express.json());
+app.use("/clothes", clothesRouters);
 app.listen(port);
-app.get("/clothes", (req, res) => {
-  res.json(data);
-});

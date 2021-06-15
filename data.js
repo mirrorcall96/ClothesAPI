@@ -21,4 +21,4 @@ const products = [
     description: "Blue jeans",
   },
 ];
-exports.products = products;
+module.exports = products;
