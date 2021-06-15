@@ -21,4 +21,5 @@ exports.clothesDetail = (req, res) => {
   if (myBook) res.json(myBook);
   else res.status(404).json({ messeage: "Path Not found" });
 };
+// testing
 exports.clothesList = (req, res) => res.json(data);
