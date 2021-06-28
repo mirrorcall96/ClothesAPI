@@ -1,25 +1,38 @@
 const slugify = require("slugify");
 let data = require("../data");
+let { product } = require("../db/models");
 
-exports.clothesCreate = (req, res) => {
-  const newClothes = req.body;
-  newClothes.id = data[data.length - 1].id + 1;
-  newClothes.slug = slugify(newClothes.name);
-  data.push(newClothes);
-  res.status(201).json(newClothes);
+exports.clothesFetch = async (clothesId) => {
+  const myProduct = await product.findByPk(clothesId);
+  return myProduct;
 };
-exports.clothesDelete = (req, res) => {
-  const myBook = data.find((book) => book.id === +req.params.clothesId);
-  if (myBook) {
-    data = data.filter((book) => book.id !== +req.params.clothesId);
+
+exports.clothesDelete = async (req, res, next) => {
+  try {
+    await req.myProduct.destroy();
     res.status(204).end();
-  } else
-    res.status(404).json({ messeage: "product with this ID doesn't exist" });
+  } catch (e) {
+    next(e);
+  }
 };
-exports.clothesDetail = (req, res) => {
-  const myBook = data.find((book) => book.id === +req.params.clothesId);
-  if (myBook) res.json(myBook);
-  else res.status(404).json({ messeage: "Path Not found" });
+exports.clothesDetail = async (req, res, next) =>
+  res.status(201).json(req.myProduct);
+exports.clothesList = async (req, res, next) => {
+  try {
+    const products = await product.findAll({
+      attributes: { exclude: ["createdAt", "updatedAt"] },
+    });
+    res.json(products);
+  } catch (e) {
+    next(e);
+  }
 };
-// testing
-exports.clothesList = (req, res) => res.json(data);
+exports.clothesUpdate = async (req, res, next) => {
+  try {
+    if (req.file) req.body.image = `http://localhost:8000/${req.file.path}`;
+    await req.myProduct.update(req.body);
+    res.status(200).json(req.myProduct);
+  } catch (e) {
+    next(e);
+  }
+};
